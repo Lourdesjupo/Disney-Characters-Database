@@ -7,30 +7,36 @@
 .main__list{
   display: flex;
   flex-direction: row;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 
 
 .card {
-  width: 450px;
-  height: 300px;
-  border-radius: 15px;
+  width: 350px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-top: 20px;
+  border-radius: 30px;
   background-color:#233465;
-  margin: 30px 30px;
+  border:3px solid #e00664;
   display: flex;
-
   flex-direction: column;
   align-items: center;
+  box-shadow: -8px 6px 20px -3px #e00664;
+      
   &__img {
-    width: 400px;
+    width: 325px;
     height: 200px;
     margin: 15px 0;
-    border-radius: 15px;
+    border-radius: 30px;
+    object-fit: cover;
+    object-position: top;
   }
   &__separator {
-    border:1px solid black;
-    width: 400px;
+    border: 2px solid black;
+    width: 325px;
     height: 60px;
     border-radius: 15px;
     margin-bottom: 15px;

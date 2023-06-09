@@ -1,6 +1,7 @@
 'use strict';
 const ulList = document.querySelector('.js_ulList');
 let dataCharacter;
+let dataInfo;
 
 function renderListCharacter(dataList) {
   for (const data of dataList) {
@@ -33,8 +34,10 @@ function getListCharacter() {
     .then((response) => response.json())
     .then((data) => {
       dataCharacter = data.data;
+      dataInfo = data.info;
       renderListCharacter(dataCharacter);
     });
 }
-  getListCharacter();
+
+getListCharacter();
 
