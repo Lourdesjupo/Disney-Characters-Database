@@ -1,11 +1,16 @@
 'use strict';
 const ulList = document.querySelector('.js_ulList');
 const favsList = document.querySelector('.js_favsList');
-const parseFavList = JSON.parse(localStorage.getItem('favCharacter'));
+const searchBtn = document.querySelector('.js_sbtn');
+const favBtn = document.querySelector('.js_fbtn');
 
+//verifico si existe o no una lista en el localStorage si no existe lo inicializa con un array vacío.
+let favoritesCharacters =
+  JSON.parse(localStorage.getItem('favCharacter')) !== null
+    ? JSON.parse(localStorage.getItem('favCharacter'))
+    : [];
 let dataCharacter;
 let dataInfo;
-let favoritesCharacters = [];
 
 function renderListCharacter(dataList) {
   ulList.innerHTML = '';
@@ -30,7 +35,7 @@ function renderCharacter(character) {
   divElement.classList.add('card__separator');
   h2Element.innerText = character.name;
   h2Element.classList.add('card__title');
-  iconElement.classList.add('fa-solid', 'fa-heart');
+  iconElement.classList.add('fa-regular', 'fa-heart', 'card__icon');
   anchorElement.classList.add('card__fav', 'js_fav');
   anchorElement.appendChild(iconElement);
   liElement.appendChild(anchorElement);
@@ -38,18 +43,23 @@ function renderCharacter(character) {
   liElement.appendChild(divElement);
   divElement.appendChild(h2Element);
   liElement.appendChild(divElement);
-  ulList.appendChild(liElement);
   anchorElement.addEventListener('click', (ev) => {
-    selectFavorite(ev, character);
+    addFavorite(ev, character);
   });
+  //por cada psj que pinta evalua si está en la lista de los favoritos y si está le pone el corazón sólido para indicar que es un fav.
+  for (let x = 0; x < favoritesCharacters.length; x++) {
+    if (character._id === favoritesCharacters[x]._id) {
+      iconElement.classList.add('fa-solid');
+    }
+  }
+  ulList.appendChild(liElement);
 }
 function getListCharacter() {
-  if (parseFavList) {
-    parseFavList.forEach((chara) => {
-      favoritesCharacters.push(chara);
-    });
+  //si existe una lista en favoritesCharacters lo pinta.
+  if (favoritesCharacters) {
     renderFavourites(favoritesCharacters);
   }
+
   fetch('https://api.disneyapi.dev/character')
     .then((response) => response.json())
     .then((data) => {
@@ -58,15 +68,22 @@ function getListCharacter() {
       renderListCharacter(dataCharacter);
     });
 }
-function selectFavorite(ev, character) {
+function addFavorite(ev, character) {
+  const selectedCharacterInList = ev.target;
   const findCharacterInFav = favoritesCharacters.findIndex(
     (el) => el._id === character._id
   );
   if (findCharacterInFav < 0) {
     favoritesCharacters.push(character);
     localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
+    selectedCharacterInList.classList.remove('fa-regular');
+    selectedCharacterInList.classList.add('fa-solid');
+  } else {
+    favoritesCharacters.splice(findCharacterInFav, 1);
+    selectedCharacterInList.classList.remove('fa-solid');
+    selectedCharacterInList.classList.add('fa-regular');
   }
-  console.log(favoritesCharacters);
+
   renderFavourites(favoritesCharacters);
 }
 
@@ -85,6 +102,17 @@ function renderFavourites(list) {
     favsList.appendChild(liElement);
   });
 }
+
+function searchCharacter(ev) {
+  ev.preventDefault();
+  const inputSearch = document.querySelector('.js_search').value;
+  fetch(`https://api.disneyapi.dev/character?name=${inputSearch}`)
+    .then((response) => response.json())
+    .then((data) => {
+      renderListCharacter(data.data);
+    });
+}
+
 getListCharacter();
 
-// ulList.addEventListener('click', selectFavorite);
+searchBtn.addEventListener('click', searchCharacter);
