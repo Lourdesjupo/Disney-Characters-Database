@@ -3,6 +3,7 @@ const ulList = document.querySelector('.js_ulList');
 const favsList = document.querySelector('.js_favsList');
 const searchBtn = document.querySelector('.js_sbtn');
 const favBtn = document.querySelector('.js_fbtn');
+const deleteFav = document.querySelector('.js_delete');
 
 //verifico si existe o no una lista en el localStorage si no existe lo inicializa con un array vacío.
 let favoritesCharacters =
@@ -82,16 +83,18 @@ function addFavorite(ev, character) {
     favoritesCharacters.splice(findCharacterInFav, 1);
     selectedCharacterInList.classList.remove('fa-solid');
     selectedCharacterInList.classList.add('fa-regular');
+    localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
   }
 
   renderFavourites(favoritesCharacters);
 }
-
 function renderFavourites(list) {
   favsList.innerHTML = '';
   list.forEach((chara) => {
     const liElement = document.createElement('li');
     const imgElement = document.createElement('img');
+    const anchorElement = document.createElement('a');
+    const iconElement = document.createElement('i');
     liElement.classList.add('fav');
     imgElement.classList.add('fav__img');
     imgElement.src =
@@ -99,10 +102,16 @@ function renderFavourites(list) {
         ? 'https://via.placeholder.com/210x295/ffffff/555555/?text=Disney'
         : chara.imageUrl;
     liElement.appendChild(imgElement);
+    anchorElement.classList.add('fav__delete', 'js_delete');
+    iconElement.classList.add('fa-solid', 'fa-xmark', 'icon__delete');
+    anchorElement.appendChild(iconElement);
+    liElement.appendChild(anchorElement);
     favsList.appendChild(liElement);
+    anchorElement.addEventListener('click', (ev) => {
+      deleteFavorite(ev, chara);
+    });
   });
 }
-
 function searchCharacter(ev) {
   ev.preventDefault();
   const inputSearch = document.querySelector('.js_search').value;
@@ -111,6 +120,14 @@ function searchCharacter(ev) {
     .then((data) => {
       renderListCharacter(data.data);
     });
+}
+function deleteFavorite(ev, chara) {
+  const favForDelete = favoritesCharacters.findIndex((el) => el._id === chara._id);
+  favoritesCharacters.splice(favForDelete,1);
+  localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
+  renderFavourites(favoritesCharacters);
+  renderListCharacter(dataCharacter);
+
 }
 
 getListCharacter();
