@@ -8,9 +8,8 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
-
-
 
 .card {
   width: 350px;
@@ -19,16 +18,30 @@
   margin-top: 20px;
   margin-top: 20px;
   border-radius: 30px;
+  position:relative;
   background-color:#233465;
-  border:3px solid #e00664;
+  // border:3px solid #e00664;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: -8px 6px 20px -3px #e00664;
-      
+  box-shadow: -8px 6px 20px -3px #9c657d;
+  &__fav{
+    font-size: 40px;
+    color:#e7287b;
+    position: absolute;
+    left: auto;
+    top:20px;
+    right: 20px;
+    background-color: wheat;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+
+  }
+
   &__img {
     width: 325px;
-    height: 200px;
+    height: 300px;
     margin: 15px 0;
     border-radius: 30px;
     object-fit: cover;
@@ -40,6 +53,7 @@
     height: 60px;
     border-radius: 15px;
     margin-bottom: 15px;
+ 
     display: flex;
     flex-direction: column;
     justify-content: center;
