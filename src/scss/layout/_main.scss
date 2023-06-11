@@ -7,23 +7,79 @@
 
 .main__fav {
   display: flex;
-  justify-content: space-evenly;
-  align-items: flex-start;
+  align-items: center;
   overflow-x: scroll;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  padding-bottom: 30px;
+  padding-top: 30px;
 }
 .fav {
   list-style-type: none;
   margin-right: 20px;
+  position: relative;
+  margin-left: 15px;
   &__img {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
     object-position: top;
+    padding-top: 10px;
+    @include tablet() {
+      width: 150px;
+      height: 150px;
+    }
+  }
+  &__delete {
+    position: absolute;
+    background-color: #e00664;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    top: 0;
+    right: 0;
+    left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
+.icon__delete {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+}
+.favorites {
+  background-color: #1eaccf1a;
+
+  &__delete {
+    font-family: $font-main;
+    background-color: #1eadcf;
+    color: white;
+    height: 25px;
+    font-size: 1.5rem;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 15px;
+    margin-top: 15px;
+    cursor: pointer;
+
+    @include tablet() {
+      height: 30px;
+      font-size: 1.8rem;
+    }
+
+    @include desktop() {
+      font-size: 1.8rem;
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
 
 .main__list {
   display: flex;
@@ -50,7 +106,7 @@
     left: auto;
     top: 20px;
     right: 20px;
-    background-color: #edc9d9;;
+    background-color: #edc9d9;
     border-radius: 50px;
     width: 40px;
     height: 40px;
@@ -88,43 +144,39 @@
   }
 }
 
+.no-display {
+  display: none;
+}
 .card:hover {
   cursor: pointer;
   box-shadow: -8px 6px 20px -3px #e00664;
-  animation: slide-top 0.4s;  
+  animation: slide-top 0.4s;
 }
 
-.fav{
+.fav:hover {
   cursor: pointer;
   animation: move 0.4s;
 }
 
-.no-display {
-  display:none
-}
-
-
-
-
 @keyframes slide-top {
   0% {
-    transform: translateY(0)
+    transform: translateY(0);
   }
 
   100% {
-    transform: translateY(-10px)
+    transform: translateY(-4px);
   }
 }
 
-// @keyframes move {
-//   0% {
-//     transform: translateY(0)
-//   }
+@keyframes move {
+  0% {
+    transform: translateY(0);
+  }
 
-//   50% {
-//     transform: translateY(-10px)
-//   }
-//   100% {
-//     transform: translateY(10px)
-//   }
-// }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
