@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
-  overflow: scroll;
+  overflow-x: scroll;
   margin-bottom: 30px;
   margin-top: 30px;
 }
@@ -40,7 +40,6 @@
   margin-top: 20px;
   border-radius: 30px;
   position: relative;
-  background-color: #233465;
   // border:3px solid #e00664;
   display: flex;
   flex-direction: column;
@@ -48,12 +47,12 @@
   box-shadow: -8px 6px 20px -3px #9c657d;
   &__fav {
     font-size: 40px;
-    color: #e7287b;
+    color: #e00664;
     position: absolute;
     left: auto;
     top: 20px;
     right: 20px;
-    background-color: wheat;
+    background-color: #edc9d9;;
     border-radius: 50px;
     width: 50px;
     height: 50px;
@@ -76,20 +75,20 @@
     height: 60px;
     border-radius: 15px;
     margin-bottom: 15px;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #1eacf9;
+    background-color: #edc9d9;
   }
 
   &__title {
     font-size: 18px;
     text-align: center;
-    color: #101624;
+    color: #1b1919;
     font-family: $font-main;
   }
 }
 
-.follow {
+.no-display {
+  display:none
 }

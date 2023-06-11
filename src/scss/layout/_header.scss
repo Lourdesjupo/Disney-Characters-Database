@@ -1,21 +1,19 @@
-.header{
-  width: 100%;
+.header {
+  background-color: white;
 }
-.logo {
+.header-menu {
   display: flex;
-  justify-content: center;
-  &-header {
-    width: 30%;
-    margin-left: 50px;
-    margin-right: 50px;
+  flex-direction: column;
+  align-items: center;
+  &__logo {
+    width: 200px;
   }
 }
 
-.header-menu {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin: 40px 20px;
-}
 
+
+
+.search__fav {
+  width: 100px;
+  height: 50pxpx;
+}

@@ -4,6 +4,12 @@ const favsList = document.querySelector('.js_favsList');
 const searchBtn = document.querySelector('.js_sbtn');
 const favBtn = document.querySelector('.js_fbtn');
 const deleteFav = document.querySelector('.js_delete');
+const favSection = document.querySelector('.favorites');
+const backBtn = document.querySelector('.js_back');
+const pagesInfo = document.querySelector('.js_pages');
+const forward = document.querySelector('.js_forward');
+
+
 
 //verifico si existe o no una lista en el localStorage si no existe lo inicializa con un array vacío.
 let favoritesCharacters =
@@ -12,6 +18,8 @@ let favoritesCharacters =
     : [];
 let dataCharacter;
 let dataInfo;
+let url = `https://api.disneyapi.dev/character`;
+let pages = 1;
 
 function renderListCharacter(dataList) {
   ulList.innerHTML = '';
@@ -29,7 +37,7 @@ function renderCharacter(character) {
   liElement.classList.add('card', 'list');
   imgElement.classList.add('card__img');
   imgElement.src =
-    character.imageUrl === ''
+    character.imageUrl === undefined || character.imageUrl === ''
       ? 'https://via.placeholder.com/210x295/ffffff/555555/?text=Disney'
       : character.imageUrl;
   imgElement.alt = character.name;
@@ -61,11 +69,12 @@ function getListCharacter() {
     renderFavourites(favoritesCharacters);
   }
 
-  fetch('https://api.disneyapi.dev/character')
+  fetch(url)
     .then((response) => response.json())
     .then((data) => {
       dataCharacter = data.data;
       dataInfo = data.info;
+      pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
       renderListCharacter(dataCharacter);
     });
 }
@@ -122,14 +131,44 @@ function searchCharacter(ev) {
     });
 }
 function deleteFavorite(ev, chara) {
-  const favForDelete = favoritesCharacters.findIndex((el) => el._id === chara._id);
-  favoritesCharacters.splice(favForDelete,1);
+  const favForDelete = favoritesCharacters.findIndex(
+    (el) => el._id === chara._id
+  );
+  favoritesCharacters.splice(favForDelete, 1);
   localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
   renderFavourites(favoritesCharacters);
   renderListCharacter(dataCharacter);
-
 }
+function deleteListFavorites() {
+  //accedo a los elementos de favoritos y desde la posición 0 borro todos los indices.
+  favoritesCharacters.splice(0, favoritesCharacters.length);
+  localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
+  renderFavourites(favoritesCharacters);
+  renderListCharacter(dataCharacter);
+}
+function favSectionClick() {
+  favSection.classList.toggle('no-display');
+}
+
+function requestNewPage (ev) {
+  const btn = ev.target.id;
+  url = dataInfo[btn];
+  if(btn ==='previousPage'&& pages!== 1){
+    getListCharacter();
+    pages--;
+    pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
+  } else if(btn==='nextPage') {
+    pages++;
+    pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
+    getListCharacter();
+  }
+}
+
 
 getListCharacter();
 
 searchBtn.addEventListener('click', searchCharacter);
+deleteFav.addEventListener('click', deleteListFavorites);
+favBtn.addEventListener('click', favSectionClick);
+backBtn.addEventListener('click', requestNewPage)
+forward.addEventListener('click', requestNewPage)
