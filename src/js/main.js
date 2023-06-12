@@ -1,4 +1,5 @@
 'use strict';
+
 const ulList = document.querySelector('.js_ulList');
 const favsList = document.querySelector('.js_favsList');
 const searchBtn = document.querySelector('.js_sbtn');
@@ -19,14 +20,21 @@ let favoritesCharacters =
 let dataCharacter;
 let dataInfo;
 let url = `https://api.disneyapi.dev/character`;
+//contador de páginas para saber la página en la que se encuentra el usuario.
 let pages = 1;
 
+//función que recibe un array, borra el contenido de la lista de personajes y llama a la función render character a la cual le irá pasando todos los personajes del array
+//renderCharacter recibe un objeto.
 function renderListCharacter(dataList) {
   ulList.innerHTML = '';
   for (const data of dataList) {
     renderCharacter(data);
   }
 }
+//función que recibe un objeto. Crea la estructura de la lista en el Dom.
+//Verifica si se recibe una url en la imagen, si no la recibe o el valor es undefined se incluye la imagen del placeholder.
+//Se crea un addEventListener en todos los anchor para saber cuando se clicka el icono like.
+//por cada psj que pinta evalua previamente si está en la lista de los favoritos y si está le pone el corazón sólido para indicar que es un fav.
 function renderCharacter(character) {
   const liElement = document.createElement('li');
   const imgElement = document.createElement('img');
@@ -63,6 +71,8 @@ function renderCharacter(character) {
   }
   ulList.appendChild(liElement);
 }
+//función que valida si el array de favoritos tiene datos y si los tiene, llama a la función de renderFavourites para pintarlos.Le pasa como parametro un array.
+//y además hace las peticiones al servidor de la lista de personajes y paginación. Una vez cumplidas las promises se llama a la función renderListCharacter para pintar la lista de personajes. 
 function getListCharacter() {
   //si existe una lista en favoritesCharacters lo pinta.
   if (favoritesCharacters) {
@@ -78,6 +88,10 @@ function getListCharacter() {
       renderListCharacter(dataCharacter);
     });
 }
+//función que recibe un evento y un personaje (se llama desde renderCharacter al crear el evento al anchor de like).
+//Se valida el elemento que selecciona el usuario y se busca si el id del personaje(el recibido por el fetch) ya existe en la lista de favoritos. 
+// si findCharacterInFav es menor a 0 indica que no está en favoritos y por lo tanto lo guarda en el local storage y modificar el icono de like a relleno.
+//en caso contrario, si lo encuentra, elimina el personaje de la lista de favoritos, actualiza el local storage y modifica el icono de like para que sea 'vacio'.
 function addFavorite(ev, character) {
   const selectedCharacterInList = ev.target;
   const findCharacterInFav = favoritesCharacters.findIndex(
@@ -90,13 +104,16 @@ function addFavorite(ev, character) {
     selectedCharacterInList.classList.add('fa-solid');
   } else {
     favoritesCharacters.splice(findCharacterInFav, 1);
+    localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
     selectedCharacterInList.classList.remove('fa-solid');
     selectedCharacterInList.classList.add('fa-regular');
-    localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
   }
 
   renderFavourites(favoritesCharacters);
 }
+//función que recibe un array (la llama addFavorite tras evaluar si el psj es o no un favorito).Borra la lista actual de favoritos y
+// actualiza en la sección de favoritos las imagenes de los personajes, verifica si el personaje tiene o no imagen y si no tiene le añade el placeholder y crea un evento.
+//El evento se crea para saber que personaje quiere borrar el usuario.
 function renderFavourites(list) {
   favsList.innerHTML = '';
   list.forEach((chara) => {
@@ -121,6 +138,7 @@ function renderFavourites(list) {
     });
   });
 }
+
 function searchCharacter(ev) {
   ev.preventDefault();
   const inputSearch = document.querySelector('.js_search').value;
@@ -149,7 +167,10 @@ function deleteListFavorites() {
 function favSectionClick() {
   favSection.classList.toggle('no-display');
 }
-
+//función para navegar entre las páginas atrás y siguiente
+//recibe un evento para saber que botón se ha clickado y se modifica la url con la página siguiente o anterior para hacer la consulta 
+//se actualiza el campo pagesInfo para saber en que página se encuentra el usuario.
+//se verifica si estás en la primera página para que no se mande la petición.
 function requestNewPage (ev) {
   const btn = ev.target.id;
   url = dataInfo[btn];
@@ -170,5 +191,5 @@ getListCharacter();
 searchBtn.addEventListener('click', searchCharacter);
 deleteFav.addEventListener('click', deleteListFavorites);
 favBtn.addEventListener('click', favSectionClick);
-backBtn.addEventListener('click', requestNewPage)
-forward.addEventListener('click', requestNewPage)
+backBtn.addEventListener('click', requestNewPage);
+forward.addEventListener('click', requestNewPage);

@@ -18,15 +18,16 @@
   position: relative;
   margin-left: 15px;
   &__img {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     object-fit: cover;
     object-position: top;
-    padding-top: 10px;
+
+    box-shadow: 0px 14px 44px -16px #1a337e;
     @include tablet() {
-      width: 150px;
-      height: 150px;
+      width: 100px;
+      height: 100px;
     }
   }
   &__delete {
@@ -47,6 +48,7 @@
   font-size: 1.6rem;
   display: flex;
   align-items: center;
+  color: white;
 }
 .favorites {
   background-color: #1eaccf1a;
@@ -61,6 +63,7 @@
     padding-right: 5px;
     margin-left: 15px;
     margin-top: 15px;
+    border-radius: 5px;
     cursor: pointer;
 
     @include tablet() {
@@ -77,9 +80,44 @@
 .pagination {
   display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
+  &__back {
+    width: 40px;
+    height: 20px;
+    font-family: $font-main;
+    font-size: 0.8rem;
+    background-color: #1eadcf;
+    color: white;
+    border-radius: 5px;
+    @include tablet() {
+      width: 80px;
+      height: 25px;
+      font-size: 1.2rem;
+    }
+  }
+
+  &__pages {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 1.5rem;
+    font-family: $font-main;
+  }
+  &__forward {
+    width: 40px;
+    height: 20px;
+    margin-right: 15px;
+    border-radius: 5px;
+    font-family: $font-main;
+    font-size: 0.8rem;
+    background-color: #1eadcf;
+    color: white;
+    @include tablet() {
+      width: 80px;
+      height: 25px;
+      font-size: 1.2rem;
+    }
+  }
 }
-
-
 
 .main__list {
   display: flex;
@@ -150,33 +188,11 @@
 .card:hover {
   cursor: pointer;
   box-shadow: -8px 6px 20px -3px #e00664;
-  animation: slide-top 0.4s;
+  transform: translateY(-10px);
 }
 
 .fav:hover {
   cursor: pointer;
-  animation: move 0.4s;
+  transform: translateY(-10px);
 }
 
-@keyframes slide-top {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes move {
-  0% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
