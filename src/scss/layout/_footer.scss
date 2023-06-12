@@ -8,6 +8,11 @@
     font-size: 1.3rem;
     font-family: $font-main;
   }
+  &__subtext {
+    margin-left: 15px;
+    font-size: 0.8rem;
+    font-family: $font-main;
+  }
   &__link {
     background-color: #1eadcf;
     color: white;

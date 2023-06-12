@@ -9,8 +9,7 @@ const favSection = document.querySelector('.favorites');
 const backBtn = document.querySelector('.js_back');
 const pagesInfo = document.querySelector('.js_pages');
 const forward = document.querySelector('.js_forward');
-
-
+const pagination = document.querySelector('.js_pagination');
 
 //verifico si existe o no una lista en el localStorage si no existe lo inicializa con un array vacío.
 let favoritesCharacters =
@@ -72,7 +71,7 @@ function renderCharacter(character) {
   ulList.appendChild(liElement);
 }
 //función que valida si el array de favoritos tiene datos y si los tiene, llama a la función de renderFavourites para pintarlos.Le pasa como parametro un array.
-//y además hace las peticiones al servidor de la lista de personajes y paginación. Una vez cumplidas las promises se llama a la función renderListCharacter para pintar la lista de personajes. 
+//y además hace las peticiones al servidor de la lista de personajes y paginación. Una vez cumplidas las promises se llama a la función renderListCharacter para pintar la lista de personajes.
 function getListCharacter() {
   //si existe una lista en favoritesCharacters lo pinta.
   if (favoritesCharacters) {
@@ -88,8 +87,8 @@ function getListCharacter() {
       renderListCharacter(dataCharacter);
     });
 }
-//función que recibe un evento y un personaje (se llama desde renderCharacter al crear el evento al anchor de like).
-//Se valida el elemento que selecciona el usuario y se busca si el id del personaje(el recibido por el fetch) ya existe en la lista de favoritos. 
+//función que recibe un evento y un personaje(objeto) (se llama desde renderCharacter al crear el evento al anchor de like).
+//Se valida el elemento que selecciona el usuario y se busca si el id del personaje(el recibido por el fetch) ya existe en la lista de favoritos.
 // si findCharacterInFav es menor a 0 indica que no está en favoritos y por lo tanto lo guarda en el local storage y modificar el icono de like a relleno.
 //en caso contrario, si lo encuentra, elimina el personaje de la lista de favoritos, actualiza el local storage y modifica el icono de like para que sea 'vacio'.
 function addFavorite(ev, character) {
@@ -114,6 +113,7 @@ function addFavorite(ev, character) {
 //función que recibe un array (la llama addFavorite tras evaluar si el psj es o no un favorito).Borra la lista actual de favoritos y
 // actualiza en la sección de favoritos las imagenes de los personajes, verifica si el personaje tiene o no imagen y si no tiene le añade el placeholder y crea un evento.
 //El evento se crea para saber que personaje quiere borrar el usuario.
+//se evalua si hay elementos en la lista de favoritos para mostrar/ocultar la sección
 function renderFavourites(list) {
   favsList.innerHTML = '';
   list.forEach((chara) => {
@@ -137,17 +137,33 @@ function renderFavourites(list) {
       deleteFavorite(ev, chara);
     });
   });
+  if (favoritesCharacters.length === 0) {
+    favSection.classList.add('no-display');
+  } else {
+    favSection.classList.remove('no-display');
+  }
 }
 
+//función que recibe un evento. Busca el texto que el usuario escribe en el buscador y crea una petición al servidor con el personaje buscado.
+//Una vez resuelta la promise llama a la función que renderiza la lista de personajes.
+//se evalua si en el campo de búsqueda se incluye o no un termino, si se incluye se oculta la paginación, si no se indica ningún término,
+//se asume que el usuario quiere ver todo el listado y por lo tanto se muestra de nuevo la paginación.
 function searchCharacter(ev) {
   ev.preventDefault();
   const inputSearch = document.querySelector('.js_search').value;
+  if (inputSearch === '') {
+    pagination.classList.remove('no-display');
+  } else {
+    pagination.classList.add('no-display');
+  }
   fetch(`https://api.disneyapi.dev/character?name=${inputSearch}`)
     .then((response) => response.json())
     .then((data) => {
       renderListCharacter(data.data);
     });
 }
+//función que recibe un evento y un objeto. Busca dentro del listado de favoritos si se encuentra el id del personaje (el objeto se recibe de la función renderFavorite)
+//si lo encuentra elimina(índice) el elemento, actualiza la lista del localStorage y renderiza tanto los favoritos como la lista de los personajes.
 function deleteFavorite(ev, chara) {
   const favForDelete = favoritesCharacters.findIndex(
     (el) => el._id === chara._id
@@ -157,34 +173,38 @@ function deleteFavorite(ev, chara) {
   renderFavourites(favoritesCharacters);
   renderListCharacter(dataCharacter);
 }
+//función que elimina todos los favoritos, actualiza el localStorage y renderiza la lista
+//de favoritos y la lista de psj.
+//se oculta la sección de favoritos
 function deleteListFavorites() {
   //accedo a los elementos de favoritos y desde la posición 0 borro todos los indices.
   favoritesCharacters.splice(0, favoritesCharacters.length);
   localStorage.setItem('favCharacter', JSON.stringify(favoritesCharacters));
+  favSection.classList.add('no-display');
   renderFavourites(favoritesCharacters);
   renderListCharacter(dataCharacter);
 }
+//función para mostrar u ocultar la sección de favoritos.
 function favSectionClick() {
   favSection.classList.toggle('no-display');
 }
 //función para navegar entre las páginas atrás y siguiente
-//recibe un evento para saber que botón se ha clickado y se modifica la url con la página siguiente o anterior para hacer la consulta 
+//recibe un evento para saber que botón se ha clickado y se modifica la url con la página siguiente o anterior para hacer la consulta
 //se actualiza el campo pagesInfo para saber en que página se encuentra el usuario.
 //se verifica si estás en la primera página para que no se mande la petición.
-function requestNewPage (ev) {
+function requestNewPage(ev) {
   const btn = ev.target.id;
   url = dataInfo[btn];
-  if(btn ==='previousPage'&& pages!== 1){
+  if (btn === 'previousPage' && pages !== 1) {
     getListCharacter();
     pages--;
     pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
-  } else if(btn==='nextPage') {
+  } else if (btn === 'nextPage') {
     pages++;
     pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
     getListCharacter();
   }
 }
-
 
 getListCharacter();
 
