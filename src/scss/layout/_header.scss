@@ -57,6 +57,9 @@
       font-size: 1.8rem;
       width: 90px;
     }
+    &:hover {
+      background-color: #1eadcf;
+    }
   }
   &__fav {
     font-family: $font-main;
@@ -77,6 +80,9 @@
       font-size: 1.8rem;
       width: 90px;
       margin-left: 50px;
+    }
+    &:hover {
+      background-color: #1eadcf;
     }
   }
 }

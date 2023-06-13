@@ -85,7 +85,10 @@ function getListCharacter() {
       dataInfo = data.info;
       pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
       renderListCharacter(dataCharacter);
-    });
+    })
+    .catch((error)=>{
+      console.error('errorr:', error)
+    })
 }
 //función que recibe un evento y un personaje(objeto) (se llama desde renderCharacter al crear el evento al anchor de like).
 //Se valida el elemento que selecciona el usuario y se busca si el id del personaje(el recibido por el fetch) ya existe en la lista de favoritos.

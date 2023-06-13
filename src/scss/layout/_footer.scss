@@ -25,6 +25,9 @@
     align-items: center;
     margin-bottom: 15px;
     text-decoration: none;
+    &:hover {
+      background-color: #4567ae;
+    }
   }
   &__icon {
     font-size: 2rem;
