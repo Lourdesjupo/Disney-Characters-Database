@@ -10,6 +10,8 @@ const backBtn = document.querySelector('.js_back');
 const pagesInfo = document.querySelector('.js_pages');
 const forward = document.querySelector('.js_forward');
 const pagination = document.querySelector('.js_pagination');
+const cardWarning = document.querySelector('.card-warning');
+
 
 //verifico si existe o no una lista en el localStorage si no existe lo inicializa con un array vacío.
 let favoritesCharacters =
@@ -59,7 +61,7 @@ function renderCharacter(character) {
   liElement.appendChild(divElement);
   divElement.appendChild(h2Element);
   liElement.appendChild(divElement);
-  anchorElement.addEventListener('click', (ev) => {
+  iconElement.addEventListener('click', (ev) => {
     addFavorite(ev, character);
   });
   //por cada psj que pinta evalua si está en la lista de los favoritos y si está le pone el corazón sólido para indicar que es un fav.
@@ -85,10 +87,11 @@ function getListCharacter() {
       dataInfo = data.info;
       pagesInfo.innerText = `${pages} de ${dataInfo.totalPages}`;
       renderListCharacter(dataCharacter);
+      cardWarning.classList.add('no-display');
     })
     .catch((error)=>{
-      console.error('errorr:', error)
-    })
+      cardWarning.classList.remove('no-display');
+    });
 }
 //función que recibe un evento y un personaje(objeto) (se llama desde renderCharacter al crear el evento al anchor de like).
 //Se valida el elemento que selecciona el usuario y se busca si el id del personaje(el recibido por el fetch) ya existe en la lista de favoritos.
@@ -96,6 +99,7 @@ function getListCharacter() {
 //en caso contrario, si lo encuentra, elimina el personaje de la lista de favoritos, actualiza el local storage y modifica el icono de like para que sea 'vacio'.
 function addFavorite(ev, character) {
   const selectedCharacterInList = ev.target;
+
   const findCharacterInFav = favoritesCharacters.findIndex(
     (el) => el._id === character._id
   );
