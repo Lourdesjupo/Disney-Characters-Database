@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Adalab Web Starter Kit</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+    <title>DisneyDataBase</title>
+    <script src="https://kit.fontawesome.com/960132646f.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Carter+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/main.css" />
     <link rel="icon" href="./assets/images/robin.jpg" />
   </head>
@@ -12,46 +15,59 @@
   <body>
       <div class="pages">
         <header class="header">
-          <div class="logo"><img class="logo-header"src="./assets/images/MickyHeader.png" alt="disneyLogo"></div>
-          <div class="header-menu">
-            <h1>Disney Database</h1>
-            <div>
-              <input type="text" name="search" id="search-input">
-              <input type="button" value="Buscar">
+           <nav class="header-menu">
+            <img class="header-menu__logo"src="./assets/images/MickyHeader.png" alt="disneyLogo">
+            <div class="search">
+              <input class="search__input js_search"type="text" name="search" placeholder="Ej:Mickey Mouse" id="search-input">
+              <input class="search__button js_sbtn" type="button" value="Buscar">
+              <input class="search__fav js_fbtn" type="button" value ="Favs">
             </div>
-            <input type="button" value ="favs">
-          </div>
+          </nav>
         </header>
 
+        <section>
+          
+        </section>
+
         <main class="main">
-          <div class="separator"></div>
-          <div class="main__fav"></div>
-          <ul class="main__list">
-            <li class="card list">
-              <img class="card__img" src="./assets/images/Robin.jpg" alt="">
-              <div class="card__separator">
-              <h2 class="card__title">lalala</h2>
-              </div>
-            </li>
-                <li class="card list">
-              <img class="card__img" src="./assets/images/Robin.jpg" alt="">
-              <div class="card__separator">
-              <h2 class="card__title">lalala</h2>
-              </div>
-            </li>
-                    <li class="card list">
-              <img class="card__img" src="./assets/images/Robin.jpg" alt="">
-              <div class="card__separator">
-              <h2 class="card__title">lalala</h2>
-              </div>
-            </li>
-          </ul>
+          <section class="favorites js_favorites">
+            <input
+              class="favorites__delete js_delete"
+              type="button"
+              value="Borrar Todos"
+            />
+            <ul class="main__fav js_favsList"></ul>
+          </section>
+          <section class="pagination js_pagination">
+            <input class="pagination__back js_back" id="previousPage" type="button" value="Atrás" />
+            <span class="pagination__pages js_pages"></span>
+            <input
+              class="pagination__forward js_forward"
+              id="nextPage"
+              type="button"
+              value="Siguiente"
+            />
+          </section>
+          <section class="characters">
+            <ul class="main__list js_ulList">
+              <li class="card-warning">
+                <img class="card-warning__img" src="./assets/images/Robin.jpg" alt="" />
+                <div class="card-warning__separator">
+                  <h2 class="card-warning__text">¡Amigos, parece que nos encontramos con un pequeño revés tecnológico! Pero no temáis, en breve volvemos!</h2>
+                </div>
+              </li>
+            </ul>
+          </section>
         </main>
 
         <footer class="footer">
           <small>
-            <p>&copy; Hecho con <3 </p> 
+            <p class="footer__text">&copy;Adalab 2023 </p>
+            <span class="footer__subtext">Made with💖 Sometimes the right path is not the easiest one </span>
           </small>
+          <a class="footer__link" href="#"
+            ><i class="fa-solid fa-arrow-up footer__icon"></i
+          ></a>
         </footer>
 
       </div>
