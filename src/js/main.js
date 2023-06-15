@@ -11,6 +11,7 @@ const pagesInfo = document.querySelector('.js_pages');
 const forward = document.querySelector('.js_forward');
 const pagination = document.querySelector('.js_pagination');
 const cardWarning = document.querySelector('.card-warning');
+const consoleBtn = document.querySelector('.consoleBtn');
 
 
 //verifico si existe o no una lista en el localStorage si no existe lo inicializa con un array vacío.
@@ -61,6 +62,16 @@ function renderCharacter(character) {
   liElement.appendChild(divElement);
   divElement.appendChild(h2Element);
   liElement.appendChild(divElement);
+  const nSeries = document.createElement('p');
+  nSeries.classList.add('card__title');
+  if(character.tvShows.length > 3){
+    nSeries.innerText = `El psj es popular ${character.tvShows.length}`;
+  } else {
+    nSeries.innerText = `${character.tvShows.length}`;
+  }
+  liElement.appendChild(nSeries);
+
+
   iconElement.addEventListener('click', (ev) => {
     addFavorite(ev, character);
   });
@@ -220,3 +231,8 @@ deleteFav.addEventListener('click', deleteListFavorites);
 favBtn.addEventListener('click', favSectionClick);
 backBtn.addEventListener('click', requestNewPage);
 forward.addEventListener('click', requestNewPage);
+consoleBtn.addEventListener('click',()=>{
+  favoritesCharacters.forEach((el)=>{
+    console.log(el.name);
+  });
+})
