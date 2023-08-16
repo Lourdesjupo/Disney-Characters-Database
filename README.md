@@ -1,3 +1,4 @@
+![DisneyCharacterDatabase](https://github.com/Lourdesjupo/Disney-Characters-Database/assets/126502912/10b0aeb7-cbe1-46c1-94f1-a17b34b6347c)
 # Disney Character Database 
 
 Este ejercicio consiste en desarrollar una **aplicación web con todos los personajes disney de la historia**, que nos permita marcar y desmarcar los personajes como favoritos y guardarlos en localStorage.
