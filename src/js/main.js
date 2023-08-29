@@ -19,7 +19,7 @@ let favoritesCharacters =
     : [];
 let dataCharacter;
 let dataInfo;
-let url = `https://api.disneyapi.dev/character`;
+let url = `http://api.disneyapi.dev/character`;
 //contador de páginas para saber la página en la que se encuentra el usuario.
 let pages = 1;
 
