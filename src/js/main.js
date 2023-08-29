@@ -208,7 +208,9 @@ function favSectionClick() {
 //se verifica si estás en la primera página para que no se mande la petición.
 function requestNewPage(ev) {
   const btn = ev.target.id;
-  url = dataInfo[btn];
+  url = convertTohttps(dataInfo[btn]);
+
+
   if (btn === 'previousPage' && pages !== 1) {
     getListCharacter();
     pages--;
@@ -219,6 +221,13 @@ function requestNewPage(ev) {
     getListCharacter();
   }
 }
+
+function convertTohttps (url) {
+  // url = 'http://api.disneyapi.dev/character?page=2&pageSize=50'
+  return url.replace ('http://','https://');
+
+}
+
 
 getListCharacter();
 
